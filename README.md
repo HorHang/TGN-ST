@@ -99,7 +99,7 @@ Graph subsampling perfrom random sampling on a given number of nodes. It is also
 
 Run Code:
 ```{bash}
-tgb/datasets/dataset_scripts/tgbl_flight_neg_generator.py
+python tgb/datasets/dataset_scripts/tgbl_flight_neg_generator.py
 ```
 
 Note: The negative edge sampling of the validation and test set are also generated.
