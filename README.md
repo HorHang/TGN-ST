@@ -370,7 +370,5 @@ Please consider citing the following reference when using this project.
 }
 ```
 
-<a href="https://zenodo.org/doi/10.5281/zenodo.13234005"><img src="https://zenodo.org/badge/836994590.svg" alt="DOI"></a>
-
 ## 11. License
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/HorHang/TGN-ST/blob/main/LICENSE)
