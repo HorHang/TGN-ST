@@ -98,14 +98,19 @@ Graph subsampling perfrom random sampling on a given number of nodes. It is also
 </p>
 
 Run Code:
+```{bash}
+tgb/datasets/dataset_scripts/tgbl_flight_neg_generator.py
+```
 
-`TODO`
+Note: The negative edge sampling of the validation and test set are also generated.
 
 The resulting sub-graph can be proceed to visualize and analyze as discussed next.
 
 - Dynamic graph visualization
 
 To understand the dynamic and graph structure, it is required to visualized it. Large graph poses very huge challenge in analysis and visualization due to computational resource. So, the whole network is required to perform subsampling for visualization feasible.
+
+Code to generate .csv to input into Gephi is available at `visualization/generate_gephi_viz_file.ipynb`
 
 By running [Force Atlas 2](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0098679) algorithm on sampled graph, with node sized by degree and colored by continent.
 
@@ -121,7 +126,7 @@ Airline route during high Covid-19 hit in Feb-21. Visualized in [Gephi](https://
 
 Note: North America: pink; European: blue; Asia: Orange; Oceane: red; South America: green.
 
-Temporal Graph Network:
+Temporal Graph Network video:
 https://github.com/user-attachments/assets/b1a4e248-870a-4c0f-9b69-37997b5c6d1e
 
 The Force Atlas 2 algorthm is able to group the airport based on their located region. DORD (O'Hare International Airport) has highest number of connection. During high Covid-19 cases, the network become sparser. Very few route is connected between the aiport, especially the airline that connect between the continents.
@@ -148,7 +153,7 @@ chart is relatively low.
 From TEA and TET plot, it guides how to select the model as well as the evaluation method as will be discussed next.
 
 
-For complete visualization, please visit `TODO put repo`
+For complete visualization, please visit `visualization/dynamic_graph_analysis.ipynb`.
 
 ## 4. Evaluation Methods
 
@@ -188,8 +193,6 @@ The script has been tested running under Python 3.10, with the following package
 
 Since we need to perform numerous number of experiments, [wandb](https://wandb.ai/) is a great package provided us to do experiment tracking and result visualization. As we are going to use [`torch.compile`](https://pytorch.org/tutorials/intermediate/torch_compile_tutorial.html) framework for FX graph compilation, we need a GPU with higher cuda compatibilyty, i.e. `torch.cuda.get_device_capability() >= 7.0`, `torch >= 2.0` and `torch_geometric >= 2.5`.
 
-`TODO code for running`
-
 ## 6. Model Selection
 
 After built TGL pipeline, we can run many experiments without burden the GPU and spent excessive amount of time. The resulting of experiment is illustrated as below.
@@ -213,6 +216,19 @@ JODIE: 68.95% | GraphMixer: 6.111s
 
 **TGN is selected to balance the training speed and performance.**
 
+Code for running experimentations:
+
+- TGN model:
+
+```{bash}
+python models/TGN.py --data "tgbl-flight" --num_run 3 --seed 1
+```
+
+- Non-TGN based model such as: {`DyGFormer`, `CAWN`, `GraphMixer`, `JODIE`, `TCL`}:
+
+```{bash}
+python train_link_prediction.py --dataset_name tgbl-flight --model_name DyGFormer --patch_size 1 --max_input_sequence_length 32 --num_runs 3 --gpu 0
+```
 ## 7. Temporal Graph Network with Static Time Encoder (TGN-ST)
 
 After model selection, we can gain insight into the selected model. [onnx](https://onnx.ai/) captures the FX graph and provides below visualization of [TGN](https://arxiv.org/abs/2006.10637) model for ease of understanding. Three main modules among 5 modules of TGN are delved using onnx. An example of graph compilation using `torch.compile` is illustrated in Time Encoder.
@@ -232,6 +248,14 @@ To improve the model efficiency, `torch.compile` are wrapped around the `embeddi
 Futhermore, the TGN forward pass in algorithm 1 implemented by [pytorch_geometric](https://github.com/pyg-team/pytorch_geometric/blob/master/examples/tgn.py) poses computational cost in the standard TGN forward pass (lines 
 7-10). This bottleneck arises from the loop that iterates through each negative neighbor query, `memory_updater`, `embedding`, and `link_predictor` for every node. To address this and reduce computational cost, we propose the TGN-ST forward pass algorithm in Algorithm 2. TGN-ST leverages the capabilities of modern GPUs with parallel processing architectures. Unlike the standard approach, TGN-ST avoids the need for individual loops for each node's negative neighbors (lines 6-9 in Algorithm 2). Instead, it exploits the GPU's ability to perform large matrix operations simultaneously.
 
+- Code for experimenting TGN-ST:
+
+
+```{bash}
+python models/TGN_ST.py --data "tgbl-flight" --num_run 3 --seed 1
+```
+
+
 ## 7. Hyperparameter Tuning
 
 We performed 200 random search experiments on wandb. The main observation are listed below:
@@ -246,7 +270,12 @@ Hyperparameter Sweeping | Hyperparameter Sweeping Top Performers
 
 To trade-off performance and efficiency, the most suitable parameter are selected and evaluated on full dataset.
 
-`TODO code for tuning`
+- Code for running hyperparameter sweep experimentations:
+
+
+```{bash}
+python models/TGN_ST_Sweep.py --data "tgbl-flight" --num_run 3 --seed 1
+```
 
 ## 8. Results
 
@@ -312,6 +341,11 @@ The consistent improvement on both dataset provides evident for the generalizabi
     </tbody>
 </table>
 
+Running Code:
+
+```{bash}
+python models/TGN_ST.py --data tgbl-flight --num_run 3 --seed 1 --optimizer adamw --bs 288 --lr 0.00072 --t_0 14 --t_mult 4 --wd 0.01292
+```
 
 ## 9. Conclusion
 Research contributions are two-fold:
