@@ -20,7 +20,8 @@ This reporitory contains a PyTorch implementation of the paper TGN-ST (submitted
   - [7. Hyperparameter Tuning](#7-hyperparameter-tuning)
   - [8. Results](#8-results)
   - [9. Conclusion](#9-conclusion)
-  - [10. License](#10-license)
+  - [10. Citations](#10-citations)
+  - [11. License](#11-license)
 
 
 ## 1. Introduction
@@ -352,6 +353,24 @@ Research contributions are two-fold:
 
 - **Model Improvement**: Proposed TGN-ST model with new state-of-the-art performance with signifincant training and evaluation speed boost.
 
+## 10. Citations
 
-## 10. License
+Please consider citing the following reference when using this project.
+
+```
+@software{horhang_2024_13234006,
+  author       = {HorHang},
+  title        = {HorHang/TGN-ST: Initial Release},
+  month        = aug,
+  year         = 2024,
+  publisher    = {Zenodo},
+  version      = {0.1.0},
+  doi          = {10.5281/zenodo.13234006},
+  url          = {https://doi.org/10.5281/zenodo.13234006}
+}
+```
+
+<a href="https://zenodo.org/doi/10.5281/zenodo.13234005"><img src="https://zenodo.org/badge/836994590.svg" alt="DOI"></a>
+
+## 11. License
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/HorHang/TGN-ST/blob/main/LICENSE)
