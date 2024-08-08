@@ -129,6 +129,8 @@ Note: North America: pink; European: blue; Asia: Orange; Oceane: red; South Amer
 
 **Temporal Graph Network [Video](https://github.com/user-attachments/assets/b1a4e248-870a-4c0f-9b69-37997b5c6d1e).**
 
+https://github.com/user-attachments/assets/b1a4e248-870a-4c0f-9b69-37997b5c6d1e
+
 The Force Atlas 2 algorthm is able to group the airport based on their located region. DORD (O'Hare International Airport) has highest number of connection. During high Covid-19 cases, the network become sparser. Very few route is connected between the aiport, especially the airline that connect between the continents.
 
 - Dynamic Graph Analysis
